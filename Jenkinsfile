@@ -3,16 +3,11 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Scan') {
             steps {
-                git 'https://github.com/eshonkulov-asliddin/jenkins-pipeline.git'
-                bat '.\\mvnw clean compile'
-            }
-        }
-        stage('Test') {
-            steps {
-                bat '.\\mvnw test'
-            }
+                withSonarQubeEnv(installationName: 'sonar1'){
+                    bat './mvnw clean org.sonarsource.scanner.maven:sonar-maven-plugin:sonar'
+                }
         }
     }
 }
